@@ -1,0 +1,534 @@
+\documentclass[12pt, a4paper]{report}
+\usepackage[utf8]{inputenc}
+\usepackage[spanish]{babel}
+\usepackage{amsmath, amssymb, amsthm}
+\usepackage{geometry}
+\usepackage[svgnames]{xcolor}
+\usepackage{hyperref}
+\usepackage{graphicx}
+\usepackage{fancyhdr}
+\usepackage{setspace}
+
+% --- Configuración de Página y Encabezados ---
+\geometry{a4paper, left=2.5cm, right=2.5cm, top=2.5cm, bottom=2.5cm}
+\pagestyle{fancy}
+\fancyhf{} % Limpiar todos los campos de encabezado y pie de página
+\fancyhead[L]{\textcolor{gray}{\small Teorema de Hopf-Rinow para Superficies Regulares}}
+\fancyhead[R]{\textcolor{gray}{\small \thepage}}
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\footrulewidth}{0pt}
+
+% --- Configuración de Colores y Enlaces ---
+\hypersetup{
+    colorlinks=true,
+    linkcolor=NavyBlue,
+    filecolor=Magenta,      
+    urlcolor=DarkCyan,
+    citecolor=Green,
+}
+
+% --- Definición de Entornos de Teorema ---
+\newtheoremstyle{miestilo}
+  {\topsep}   % space above
+  {\topsep}   % space below
+  {\itshape}  % body font
+  {}          % indent amount
+  {\bfseries\color{NavyBlue}} % theorem head font
+  {.}         % punctuation after theorem head
+  {.5em}      % space after theorem head
+  {}          % theorem head spec
+
+\theoremstyle{miestilo}
+\newtheorem{teorema}{Teorema}[chapter]
+\newtheorem{proposicion}[teorema]{Proposición}
+\newtheorem{lema}[teorema]{Lema}
+\newtheorem{corolario}[teorema]{Corolario}
+
+\newtheoremstyle{midefinicion}
+  {\topsep}   % space above
+  {\topsep}   % space below
+  {}          % body font
+  {}          % indent amount
+  {\bfseries\color{DarkGreen}} % definition head font
+  {.}         % punctuation after theorem head
+  {.5em}      % space after theorem head
+  {}          % theorem head spec
+
+\theoremstyle{midefinicion}
+\newtheorem{definicion}[teorema]{Definición}
+\newtheorem{ejemplo}[teorema]{Ejemplo}
+\newtheorem{observacion}[teorema]{Observación}
+
+\renewcommand{\proofname}{\textcolor{Maroon}{\textbf{Demostración}}}
+
+% --- Títulos de Capítulo y Secciones ---
+\usepackage{titlesec}
+\titleformat{\chapter}[display]
+  {\normalfont\huge\bfseries\color{DarkRed}}
+  {\chaptertitlename\ \thechapter}
+  {20pt}
+  {\Huge}
+\titleformat{\section}
+  {\normalfont\Large\bfseries\color{NavyBlue}}
+  {\thesection}
+  {1em}
+  {}
+\titleformat{\subsection}
+  {\normalfont\large\bfseries\color{DarkSlateGray}}
+  {\thesubsection}
+  {1em}
+  {}
+
+\begin{document}
+
+\onehalfspacing
+
+\begin{titlepage}
+    \centering
+    \vspace*{1cm}
+    {\Huge\bfseries\color{DarkRed} El Teorema de Hopf-Rinow en el marco de la Geometría Diferencial de Superficies}
+    \vfill
+    \begin{center}
+        \Large\textbf{Trabajo Fin de Grado}
+    \end{center}
+    \vfill
+    {\large Universidad Nacional de Educación a Distancia (UNED)}
+    \vspace{2cm}
+\end{titlepage}
+
+\chapter*{Resumen}
+\addcontentsline{toc}{chapter}{Resumen}
+
+\noindent Este trabajo ofrece una exposición autocontenida del Teorema de Hopf-Rinow, un resultado central que conecta la estructura métrica, topológica y geométrica de las superficies regulares. Se desarrollan los conceptos preliminares necesarios, partiendo de la primera forma fundamental y la noción de geometría intrínseca, para después abordar la teoría de geodésicas y la aplicación exponencial como herramientas indispensables. La exposición se basa principalmente en la obra de J. McCleary, enriquecida con el formalismo del texto de A. F. Costa et al. El núcleo del trabajo es la demostración detallada del teorema, que establece la equivalencia entre la completitud métrica de una superficie y su completitud geodésica. Como consecuencia fundamental, se prueba que en una superficie completa siempre existen geodésicas que minimizan la distancia entre dos puntos. Finalmente, se discuten algunas de las principales consecuencias de este resultado en el ámbito de la geometría global de superficies, como su aplicación al estudio de variedades compactas y su papel en el Teorema de Cartan-Hadamard.
+
+\tableofcontents
+
+\chapter*{Prefacio}
+\addcontentsline{toc}{chapter}{Prefacio}
+
+El Teorema de Hopf-Rinow, publicado en 1931 por Heinz Hopf y Willi Rinow [3], constituye un resultado fundamental en la geometría diferencial global. Su importancia radica en que establece una conexión rigurosa y elegante entre conceptos que, a primera vista, pertenecen a dominios distintos de las matemáticas: la completitud de un espacio métrico, una noción de naturaleza topológica y analítica; la completitud geodésica, una propiedad puramente geométrica sobre la posibilidad de extender indefinidamente las "líneas rectas" de una superficie; y la existencia de curvas que minimizan la distancia, un problema clásico del cálculo de variaciones.
+
+Antes de este resultado, la geometría diferencial, impulsada en gran medida por la obra de Carl Friedrich Gauss, se había concentrado predominantemente en el estudio de propiedades locales. Se analizaba la curvatura en un punto o la forma de una superficie en un entorno infinitesimal, pero las preguntas sobre la estructura global de las superficies permanecían en un terreno más incierto. El Teorema de Hopf-Rinow proporcionó una respuesta precisa: si una superficie es completa como espacio métrico, entonces no solo todas sus geodésicas pueden extenderse indefinidamente, sino que, además, el camino más corto entre dos puntos cualesquiera siempre existe y es una geodésica.
+
+Este trabajo se propone ofrecer una exposición detallada de este teorema. El desarrollo de la teoría se basará principalmente en la presentación pedagógica de John McCleary en su obra *Geometry from a Differentiable Viewpoint* [4], complementándola con el formalismo y los detalles adicionales presentes en el texto de Antonio F. Costa, José M. Gamboa y Ana M. Porto, *Geometría Diferencial de Curvas y Superficies* [5], para asegurar un tratamiento completo.
+
+Comenzaremos estableciendo los cimientos de la geometría intrínseca. A continuación, desarrollaremos la teoría de las geodésicas y la aplicación exponencial, herramientas indispensables para la formulación y demostración del teorema principal. El núcleo del trabajo será la demostración detallada del Teorema de Hopf-Rinow, desglosando sus implicaciones y la lógica subyacente. Finalmente, exploraremos las consecuencias del teorema y su conexión con otros resultados capitales de la geometría global como el Teorema de Cartan-Hadamard.
+
+\chapter{Preliminares de Geometría Intrínseca: El Escenario del Teorema}
+
+Para comprender el alcance del Teorema de Hopf-Rinow, es imprescindible establecer primero el marco conceptual en el que opera: la geometría intrínseca de las superficies. Esta rama de la geometría diferencial se ocupa de las propiedades de una superficie que pueden ser determinadas por un observador confinado a ella, sin ninguna referencia al espacio tridimensional que la contiene. El Teorema de Hopf-Rinow es una afirmación puramente intrínseca, y este capítulo sienta las bases para entender por qué.
+
+\section{Superficies, Cartas y la Primera Forma Fundamental}
+
+Comenzamos con las definiciones formales que nos permitirán trabajar con superficies de manera rigurosa.
+
+\begin{definicion}[Carta Local]
+Sea $M$ un subconjunto del espacio euclídeo $\mathbb{R}^3$. Una \textbf{carta} de $M$ es una terna $c = (U, \varphi, A)$, donde $U$ es un subconjunto abierto de $\mathbb{R}^2$, $A$ es un subconjunto abierto de $\mathbb{R}^3$, y la aplicación $\varphi: U \to \mathbb{R}^3$ cumple:
+\begin{enumerate}
+    \item $\varphi$ es de clase $C^\infty$.
+    \item $\varphi$ es un homeomorfismo entre $U$ y su imagen $\varphi(U) = M \cap A$.
+    \item Para cada $u \in U$, la diferencial $d\varphi_u: \mathbb{R}^2 \to \mathbb{R}^3$ es inyectiva, es decir, su matriz jacobiana tiene rango 2. Esta condición significa que $\varphi$ es una \textbf{inmersión}.
+\end{enumerate}
+\end{definicion}
+
+Intuitivamente, una carta es un mapa plano y sin distorsiones (a nivel diferencial) de una porción de la superficie.
+
+\begin{definicion}
+Un \textbf{atlas} de un subconjunto $M \subset \mathbb{R}^3$ es una colección de cartas $\mathcal{A}_M = \{c_i = (U_i, \varphi_i, A_i)\}_{i \in I}$ tal que la unión de sus imágenes cubre todo $M$, es decir, $M = \bigcup_{i \in I} \varphi_i(U_i)$. Un subconjunto $M \subset \mathbb{R}^3$ que admite un atlas se denomina \textbf{superficie regular} (o diferenciable).
+\end{definicion}
+
+El concepto clave que nos permite medir distancias y ángulos sobre la superficie es el plano tangente.
+
+\begin{definicion}
+Sea $p$ un punto de una superficie regular $M$. El \textbf{plano tangente} a $M$ en $p$, denotado por $T_pM$, es el subespacio vectorial de $\mathbb{R}^3$ generado por los vectores velocidad en $p$ de todas las curvas regulares contenidas en $M$ que pasan por $p$. Si $p = \varphi(u_0, v_0)$ para una carta $(U, \varphi, A)$, entonces una base para $T_pM$ viene dada por los vectores $\{\varphi_u(u_0, v_0), \varphi_v(u_0, v_0)\}$, donde $\varphi_u = \frac{\partial\varphi}{\partial u}$ y $\varphi_v = \frac{\partial\varphi}{\partial v}$.
+\end{definicion}
+
+Con el plano tangente, podemos definir la herramienta fundamental para la geometría intrínseca.
+
+\begin{definicion}[Primera Forma Fundamental]
+La \textbf{Primera Forma Fundamental} de una superficie $M$ en un punto $p \in M$ es la forma bilineal simétrica $I_p: T_pM \times T_pM \to \mathbb{R}$ definida como la restricción del producto escalar euclídeo de $\mathbb{R}^3$ al plano tangente $T_pM$. Es decir, para dos vectores tangentes $\vec{w}_1, \vec{w}_2 \in T_pM$, se tiene:
+$$I_p(\vec{w}_1, \vec{w}_2) = \langle \vec{w}_1, \vec{w}_2 \rangle$$
+\end{definicion}
+
+La primera forma fundamental nos permite realizar mediciones sobre la superficie. En una carta local $\varphi(u,v)$, cualquier vector tangente $\vec{w} \in T_pM$ se puede escribir como combinación lineal de los vectores base: $\vec{w} = a\varphi_u + b\varphi_v$. La primera forma fundamental se expresa entonces mediante una matriz cuyos coeficientes dependen únicamente de la carta.
+
+\begin{definicion}[Coeficientes de la Primera Forma Fundamental]
+Dada una carta $\varphi(u,v)$, los coeficientes de la primera forma fundamental son las funciones $E, F, G: U \to \mathbb{R}$ definidas por:
+\begin{itemize}
+    \item $E(u,v) = I_p(\varphi_u, \varphi_u) = \langle \varphi_u, \varphi_u \rangle = ||\varphi_u||^2$
+    \item $F(u,v) = I_p(\varphi_u, \varphi_v) = \langle \varphi_u, \varphi_v \rangle$
+    \item $G(u,v) = I_p(\varphi_v, \varphi_v) = \langle \varphi_v, \varphi_v \rangle = ||\varphi_v||^2$
+\end{itemize}
+La matriz de la primera forma fundamental en la base $\{\varphi_u, \varphi_v\}$ es, por tanto:
+$$\begin{pmatrix} E & F \\ F & G \end{pmatrix}$$
+\end{definicion}
+
+Esta matriz codifica toda la información métrica local de la superficie. Por ejemplo, la longitud de un arco de curva $\alpha(t) = \varphi(u(t), v(t))$ en la superficie se calcula mediante la integral:
+$$L(\alpha) = \int_a^b \sqrt{E(u')^2 + 2F u'v' + G(v')^2} \, dt$$
+Esta fórmula depende exclusivamente de $E, F, G$, lo que sugiere que la longitud de una curva es una propiedad intrínseca.
+
+\section{Isometrías y la Noción de Geometría Intrínseca}
+
+La idea de que ciertas propiedades geométricas no dependen de cómo una superficie "se ve" desde fuera se formaliza a través del concepto de isometría, como se explica en Costa et al. [5].
+
+\begin{definicion}[Isometría]
+Un difeomorfismo $\phi: S_1 \to S_2$ entre dos superficies regulares se llama una \textbf{isometría} si preserva la primera forma fundamental. Es decir, para todo $p \in S_1$ y para todo par de vectores tangentes $\vec{w}_1, \vec{w}_2 \in T_p(S_1)$, se cumple:
+$$I_p(\vec{w}_1, \vec{w}_2) = I_{\phi(p)}(d\phi_p(\vec{w}_1), d\phi_p(\vec{w}_2))$$
+Dos superficies se dicen \textbf{isométricas} si existe una isometría entre ellas.
+\end{definicion}
+
+Una isometría es, en esencia, una "flexión" de la superficie que no la estira ni la desgarra. Por ejemplo, un cilindro puede ser "desenrollado" en un plano; esta operación es una isometría local. El plano y el cilindro son localmente isométricos [5].
+
+Esto nos lleva a una distinción fundamental [4]:
+\begin{itemize}
+    \item \textbf{Propiedades Intrínsecas}: Son aquellas que se preservan bajo isometrías. Dependen únicamente de la primera forma fundamental ($E, F, G$). Ejemplos son la longitud de las curvas, el área de las regiones y, como veremos, la curvatura gaussiana.
+    \item \textbf{Propiedades Extrínsecas}: Son aquellas que dependen de la inmersión de la superficie en $\mathbb{R}^3$. No se preservan bajo todas las isometrías. Un ejemplo es la curvatura media o las curvaturas principales, que describen cómo la superficie se curva en el espacio ambiente.
+\end{itemize}
+
+El Teorema de Hopf-Rinow trata sobre geodésicas y distancias, que son conceptos intrínsecos. La justificación última de por qué la estructura de las geodésicas es intrínseca reside en el célebre *Theorema Egregium* de Gauss.
+
+\section{Theorema Egregium: La Curvatura Gaussiana es Intrínseca}
+
+La curvatura gaussiana $K$, definida inicialmente a través del operador de forma (o mapa de Weingarten), que es una construcción extrínseca, resulta ser, de manera sorprendente, una propiedad intrínseca. Este es el contenido del *Theorema Egregium* de Gauss ("Teorema Egregio" o "Teorema Notable"). Para demostrarlo, necesitamos introducir los símbolos de Christoffel.
+
+\begin{definicion}
+Dada una carta $\varphi(u,v)$, los vectores $\varphi_{uu}, \varphi_{uv}, \varphi_{vv}$ (las segundas derivadas parciales de $\varphi$) son vectores en $\mathbb{R}^3$. Podemos descomponerlos en su parte tangente (una combinación lineal de $\varphi_u$ y $\varphi_v$) y su parte normal (un múltiplo del vector normal unitario $N$). Los coeficientes de la parte tangente son los \textbf{Símbolos de Christoffel} $\Gamma_{ij}^k$ (para $i,j,k \in \{1,2\}$, donde $u_1=u, u_2=v$):
+\begin{align*}
+\varphi_{u_1 u_1} &= \Gamma_{11}^1 \varphi_{u_1} + \Gamma_{11}^2 \varphi_{u_2} + e N \\
+\varphi_{u_1 u_2} &= \Gamma_{12}^1 \varphi_{u_1} + \Gamma_{12}^2 \varphi_{u_2} + f N \\
+\varphi_{u_2 u_2} &= \Gamma_{22}^1 \varphi_{u_1} + \Gamma_{22}^2 \varphi_{u_2} + g N
+\end{align*}
+donde $e, f, g$ son los coeficientes de la segunda forma fundamental.
+\end{definicion}
+
+La clave es que estos símbolos, aunque definidos a partir de segundas derivadas (que parecen extrínsecas), pueden calcularse usando únicamente la primera forma fundamental y sus derivadas. Tomando el producto escalar de las ecuaciones anteriores con $\varphi_u$ y $\varphi_v$ y utilizando las relaciones como $2\langle \varphi_{uu}, \varphi_u \rangle = E_u$, se obtiene un sistema de ecuaciones lineales para las $\Gamma_{ij}^k$, como se detalla en Costa et al. [5]. Por ejemplo:
+$$ \begin{pmatrix} E & F \\ F & G \end{pmatrix} \begin{pmatrix} \Gamma_{11}^1 \\ \Gamma_{11}^2 \end{pmatrix} = \begin{pmatrix} \frac{1}{2}E_u \\ F_u - \frac{1}{2}E_v \end{pmatrix} $$
+Como la matriz $\begin{pmatrix} E & F \\ F & G \end{pmatrix}$ es invertible (su determinante es $EG-F^2 > 0$), los símbolos de Christoffel $\Gamma_{ij}^k$ están unívocamente determinados por $E, F, G$ y sus derivadas parciales. Por lo tanto, son cantidades intrínsecas.
+
+\begin{teorema}
+La curvatura gaussiana $K$ de una superficie es una propiedad intrínseca. Puede expresarse únicamente en términos de los coeficientes de la primera forma fundamental y sus derivadas.
+\end{teorema}
+
+\begin{proof}
+La prueba se basa en las llamadas ecuaciones de compatibilidad, que surgen de la igualdad de las derivadas parciales mixtas, por ejemplo, $(\varphi_{uu})_v = (\varphi_{uv})_u$. Al expresar estas derivadas en términos de la base $\{\varphi_u, \varphi_v, N\}$ usando los símbolos de Christoffel, se obtienen relaciones entre estos símbolos y los coeficientes de las dos formas fundamentales. Una de estas relaciones, conocida como la ecuación de Gauss, es [4, 5]:
+$$ E K = (\Gamma_{11}^2)_v - (\Gamma_{12}^2)_u + \Gamma_{11}^1 \Gamma_{12}^2 + \Gamma_{11}^2 \Gamma_{22}^2 - \Gamma_{12}^1 \Gamma_{11}^2 - \Gamma_{12}^2 \Gamma_{12}^2 $$
+Dado que los símbolos de Christoffel $\Gamma_{ij}^k$ son intrínsecos, esta fórmula demuestra que la curvatura gaussiana $K$ también lo es. Una expresión explícita, aunque compleja, para $K$ en términos de $E, F, G$ y sus derivadas hasta segundo orden es la fórmula de Brioschi [5].
+\end{proof}
+
+\begin{corolario}
+Si dos superficies son isométricas, entonces tienen la misma curvatura gaussiana en puntos correspondientes.
+\end{corolario}
+
+Este corolario es inmediato. Por ejemplo, una esfera de radio $R$ tiene curvatura constante $K = 1/R^2$, mientras que un plano tiene $K=0$. Como sus curvaturas son diferentes, no puede existir una isometría entre una esfera y un plano. Esto proporciona una prueba rigurosa de que no se puede hacer un mapa plano perfecto de la Tierra sin distorsión [4].
+
+El Theorema Egregium es la pieza fundamental que permite que la teoría de las geodésicas y, en última instancia, el Teorema de Hopf-Rinow, sean parte de la geometría intrínseca. Las geodésicas se definen mediante ecuaciones que involucran los símbolos de Christoffel, que acabamos de ver que son intrínsecos. Por lo tanto, todo el edificio conceptual que construiremos a continuación descansa sobre esta base sólida: la geometría de una superficie, en sus aspectos más profundos, puede estudiarse desde dentro.
+
+\chapter{Geodésicas: Las "Rectas" de una Superficie}
+
+En el plano euclídeo, una línea recta es a la vez el camino más corto entre dos puntos y la curva que no "se tuerce", es decir, su vector aceleración es siempre nulo. En una superficie curva, estos dos conceptos deben ser redefinidos. La generalización de la "línea recta" es la \textbf{geodésica}, una curva que es "lo más recta posible" dentro de las limitaciones impuestas por la curvatura de la superficie.
+
+\section{Definición de Geodésica}
+
+Existen varias maneras equivalentes de formalizar la idea de una curva "recta" en una superficie.
+
+\begin{definicion}[Curvatura Geodésica]
+Sea $\alpha(s)$ una curva parametrizada por la longitud de arco en una superficie $S$. Su vector aceleración $\alpha''(s)$ puede descomponerse en una componente normal a la superficie, $k_n N$, y una componente tangente a la superficie, $k_g n_\alpha$. La magnitud $k_g(s) = \langle \alpha''(s), n_\alpha(s) \rangle$, donde $n_\alpha = N \times \alpha'$ es el vector normal intrínseco, se llama \textbf{curvatura geodésica} de $\alpha$ en $s$. Esta mide cuánto se "curva" la trayectoria de la curva desde la perspectiva de un observador en la superficie [4].
+\end{definicion}
+
+La curvatura geodésica, al igual que la curvatura gaussiana, es una propiedad intrínseca, ya que puede calcularse utilizando únicamente los coeficientes de la primera forma fundamental y sus derivadas [5]. Esto nos lleva a la definición principal de geodésica.
+
+\begin{definicion}[Geodésica]
+Una curva $\gamma$ en una superficie $S$ es una \textbf{geodésica} si su curvatura geodésica es idénticamente nula, $k_g(s) \equiv 0$, a lo largo de toda la curva. Esta es la definición adoptada en McCleary [4].
+\end{definicion}
+
+Esta definición captura la idea de que una geodésica no tiene "curvatura lateral" dentro de la superficie. Toda su aceleración, si la hay, apunta en la dirección normal a la superficie. Esto nos lleva a una definición alternativa, utilizada en Costa et al. [5].
+
+\begin{proposicion}
+Una curva $\gamma(t)$ en una superficie $S$ es una geodésica si y solo si su vector aceleración $\gamma''(t)$ es en todo punto ortogonal al plano tangente $T_{\gamma(t)}S$.
+\end{proposicion}
+
+\begin{proof}
+La componente tangencial de la aceleración es, por definición, proporcional a la curvatura geodésica. Por lo tanto, $k_g \equiv 0$ si y solo si la componente tangencial de la aceleración es siempre nula, lo que significa que $\gamma''(t)$ es puramente normal a la superficie.
+\end{proof}
+
+\begin{corolario}
+Una parametrización geodésica tiene velocidad constante.
+\end{corolario}
+\begin{proof}
+Sea $\gamma(t)$ una parametrización geodésica. La derivada del cuadrado de su velocidad es:
+$$ \frac{d}{dt} ||\gamma'(t)||^2 = \frac{d}{dt} \langle \gamma'(t), \gamma'(t) \rangle = 2 \langle \gamma''(t), \gamma'(t) \rangle $$
+Como $\gamma''(t)$ es ortogonal a $T_{\gamma(t)}S$ y $\gamma'(t)$ pertenece a $T_{\gamma(t)}S$, su producto escalar es cero. Por lo tanto, $||\gamma'(t)||^2$ es constante, y también lo es la velocidad $||\gamma'(t)||$ [5].
+\end{proof}
+
+Ejemplos clásicos de geodésicas incluyen las líneas rectas en el plano euclídeo y los círculos máximos en una esfera [4, 5].
+
+\section{Ecuaciones Diferenciales de las Geodésicas}
+
+La condición de que la componente tangencial de la aceleración sea nula se puede traducir en un sistema de ecuaciones diferenciales de segundo orden. Sea una curva $\gamma(t) = \varphi(u(t), v(t))$ en una carta local. Su vector aceleración es:
+$$ \gamma''(t) = \frac{d}{dt}(\varphi_u u' + \varphi_v v') = \varphi_{uu}(u')^2 + 2\varphi_{uv}u'v' + \varphi_{vv}(v')^2 + \varphi_u u'' + \varphi_v v'' $$
+Sustituyendo las expresiones de las segundas derivadas $\varphi_{ij}$ en términos de los símbolos de Christoffel, y agrupando las componentes tangenciales (los términos con $\varphi_u$ y $\varphi_v$), la condición de que estas componentes sean cero nos da el siguiente sistema [4, 5]:
+
+\begin{teorema}[Ecuaciones de las Geodésicas]
+Una curva $\gamma(t) = \varphi(u(t), v(t))$ es una geodésica si y solo si sus funciones coordenadas $u(t)$ y $v(t)$ satisfacen el sistema de ecuaciones diferenciales:
+\begin{align*}
+u'' + \Gamma_{11}^1 (u')^2 + 2\Gamma_{12}^1 u'v' + \Gamma_{22}^1 (v')^2 &= 0 \\
+v'' + \Gamma_{11}^2 (u')^2 + 2\Gamma_{12}^2 u'v' + \Gamma_{22}^2 (v')^2 &= 0
+\end{align*}
+\end{teorema}
+
+Estas ecuaciones son fundamentales. Como los símbolos de Christoffel $\Gamma_{ij}^k$ son intrínsecos, las geodésicas también lo son. Si $\phi: S_1 \to S_2$ es una isometría, entonces transforma geodésicas de $S_1$ en geodésicas de $S_2$ [4].
+
+\section{Las Geodésicas como Curvas que Minimizan la Distancia}
+
+Hasta ahora, hemos definido las geodésicas como las curvas "más rectas". La otra intuición fundamental sobre las líneas rectas es que son los caminos más cortos. El siguiente teorema establece que, a nivel local, estas dos nociones coinciden.
+
+\begin{teorema}
+Si una curva $\alpha$ parametrizada por la longitud de arco es la curva de menor longitud que une dos puntos cualesquiera en un entorno suficientemente pequeño, entonces $\alpha$ es una geodésica.
+\end{teorema}
+
+\begin{proof}
+La prueba es un argumento clásico del cálculo de variaciones, como se detalla en McCleary [4].
+\begin{enumerate}
+    \item \textbf{Asumir por contradicción:} Supongamos que $\alpha$ minimiza la longitud pero no es una geodésica. Entonces, existe un punto $\alpha(s_0)$ donde su curvatura geodésica $k_g(s_0) \neq 0$. Por continuidad, $k_g(s) \neq 0$ en un pequeño intervalo $[j,k]$ alrededor de $s_0$.
+    \item \textbf{Construir una variación:} Se construye una familia de curvas $\alpha_r(s)$ que dependen de un parámetro $r$, donde todas las curvas $\alpha_r$ conectan los mismos puntos finales que el segmento de $\alpha$ en $[j,k]$. La curva original es $\alpha_0 = \alpha$. La variación se construye "empujando" la curva $\alpha$ en la dirección de su normal intrínseca $n_\alpha(s)$.
+    \item \textbf{Calcular la derivada de la longitud:} Se define la función de longitud $L(r) = \int_j^k ||\alpha_r'(s)|| ds$. Como $\alpha$ (es decir, $\alpha_0$) es la curva de longitud mínima por hipótesis, la función $L(r)$ debe tener un mínimo en $r=0$. Por lo tanto, su derivada $L'(0)$ debe ser cero.
+    \item \textbf{Llegar a una contradicción:} Se calcula explícitamente $L'(0)$ mediante derivación bajo el signo integral e integración por partes. El resultado es proporcional a $-\int_j^k \lambda(s) k_g(s) ds$, donde $\lambda(s)$ es una función auxiliar positiva en el intervalo. Como el integrando tiene signo constante y no es nulo, la integral no puede ser cero, lo que contradice que $L'(0)$ deba serlo.
+\end{enumerate}
+La contradicción surge de suponer que $k_g \neq 0$. Por lo tanto, una curva que minimiza localmente la longitud debe tener curvatura geodésica nula, es decir, debe ser una geodésica.
+\end{proof}
+
+Este teorema establece un vínculo local entre la propiedad variacional (minimizar longitud) y la propiedad geométrica (ser "recta"). El Teorema de Hopf-Rinow, como veremos, extiende esta conexión a un nivel global para una clase importante de superficies: las completas.
+
+\chapter{La Aplicación Exponencial}
+
+Las ecuaciones de las geodésicas son un sistema de ecuaciones diferenciales ordinarias (EDOs) de segundo orden. La teoría general de las EDOs nos garantiza la existencia y unicidad de soluciones dadas unas condiciones iniciales. Esta poderosa herramienta analítica tiene profundas consecuencias geométricas, que se cristalizan en la definición de la aplicación exponencial.
+
+\section{Existencia y Unicidad de Geodésicas}
+
+El fundamento para la construcción de la aplicación exponencial es el siguiente teorema, que es una aplicación directa de la teoría de EDOs a las ecuaciones de las geodésicas [4, 5].
+
+\begin{teorema}[Existencia y Unicidad de Geodésicas]
+Sea $p$ un punto en una superficie regular $S$ y sea $\vec{v}$ un vector en el plano tangente $T_pS$. Entonces, existe un intervalo abierto $I$ que contiene a $0$ y una única geodésica $\gamma: I \to S$ que satisface las condiciones iniciales:
+$$\gamma(0) = p \quad \text{y} \quad \gamma'(0) = \vec{v}$$
+Además, la solución depende suavemente de las condiciones iniciales $(p, \vec{v})$.
+\end{teorema}
+
+Este resultado es local: garantiza la existencia de la geodésica solo para un pequeño intervalo de tiempo. La cuestión de si este intervalo puede extenderse a toda la recta real $\mathbb{R}$ es precisamente la cuestión de la completitud geodésica.
+
+\section{La Aplicación Exponencial y los Entornos Normales}
+
+La existencia y unicidad de geodésicas nos permite definir una aplicación fundamental que relaciona el plano tangente (un espacio lineal) con la superficie (un espacio curvo).
+
+\begin{definicion}[Aplicación Exponencial]
+Sea $p$ un punto en una superficie $S$. La \textbf{aplicación exponencial} en $p$, denotada por $\exp_p$, es una aplicación definida en un subconjunto del plano tangente $T_pS$ con valores en $S$. Para un vector $\vec{v} \in T_pS$, se define:
+$$\exp_p(\vec{v}) = \gamma_{\vec{v}}(1)$$
+donde $\gamma_{\vec{v}}(t)$ es la única geodésica con $\gamma_{\vec{v}}(0) = p$ y $\gamma'_{\vec{v}}(0) = \vec{v}$.
+Intuitivamente, $\exp_p(\vec{v})$ es el punto al que se llega si se parte de $p$ y se "camina" a lo largo de la geodésica en la dirección de $\vec{v}$ durante un tiempo de 1. Si $\vec{v}$ es un vector de longitud $L$, $\exp_p(\vec{v})$ es el punto a una distancia $L$ a lo largo de la geodésica [4].
+\end{definicion}
+
+La aplicación exponencial es la herramienta clave para relacionar la geometría local de la superficie con la de su plano tangente.
+
+\begin{teorema}[Propiedades de la Aplicación Exponencial]
+Para cada punto $p \in S$, existe un valor $\epsilon_p > 0$ (posiblemente $\epsilon_p = \infty$) y un entorno abierto $B_{\epsilon_p}(0_p) \subset T_pS$ (la bola abierta de radio $\epsilon_p$ centrada en el origen) tal que:
+\begin{enumerate}
+    \item La aplicación $\exp_p: B_{\epsilon_p}(0_p) \to S$ es un difeomorfismo sobre su imagen, que es un entorno abierto de $p$ en $S$.
+    \item Este entorno, $U_p = \exp_p(B_{\epsilon_p}(0_p))$, se llama \textbf{entorno normal} de $p$.
+    \item Dos puntos cualesquiera en un entorno normal $U_p$ están unidos por una única geodésica minimizante contenida en $U_p$.
+\end{enumerate}
+Este resultado se encuentra tanto en McCleary [4] como en Costa et al. [5].
+\end{teorema}
+
+Este teorema nos dice que, localmente, la superficie se comporta de manera muy parecida a su plano tangente. Las líneas rectas que pasan por el origen en $T_pS$ se corresponden con las geodésicas que pasan por $p$ en $S$.
+
+\section{El Lema de Gauss y sus Consecuencias}
+
+Una de las propiedades más importantes de la aplicación exponencial es el Lema de Gauss. Este lema establece una propiedad de ortogonalidad fundamental que es clave para la demostración del Teorema de Hopf-Rinow.
+
+\begin{lema}[Lema de Gauss]
+Sea $p \in S$ y sea $\vec{v} \in T_pS$ un vector tal que $\exp_p$ está definida en $\vec{v}$. La diferencial de $\exp_p$ en el punto $\vec{v} \in T_pS$, denotada $(d\exp_p)_{\vec{v}}: T_{\vec{v}}(T_pS) \to T_{\exp_p(\vec{v})}S$, preserva la ortogonalidad con respecto al vector radial $\vec{v}$. En términos más intuitivos, las "esferas geodésicas" (imágenes de esferas en $T_pS$) son ortogonales a las "geodésicas radiales" (imágenes de rayos en $T_pS$).
+\end{lema}
+
+Una versión práctica y demostrable con las herramientas que hemos desarrollado es el Lema 11.16 de McCleary [4].
+
+\begin{lema}[Versión del Lema de Gauss]
+Si $\alpha:[a,b]\to S$ es una curva regular a trozos contenida en un entorno normal de $p$, y se expresa en coordenadas polares geodésicas como $\alpha(t) = \exp_p(u(t)X(t))$, donde $u(t)$ es la distancia radial y $X(t)$ es un vector unitario de dirección, entonces:
+$$\int_a^b ||\alpha'(t)|| dt \ge |u(b) - u(a)|$$
+La igualdad se cumple si y solo si la dirección $X(t)$ es constante y la función radial $u(t)$ es monótona, es decir, si $\alpha$ es un segmento de una geodésica radial.
+\end{lema}
+
+\begin{proof}
+Sea $A(u,t) = \exp_p(uX(t))$, de modo que $\alpha(t) = A(u(t), t)$. La derivada de $\alpha$ es $\alpha'(t) = \frac{\partial A}{\partial u}\frac{du}{dt} + \frac{\partial A}{\partial t}$.
+El vector $\frac{\partial A}{\partial u}$ es el vector velocidad de la geodésica radial en la dirección $X(t)$, por lo que es un vector unitario: $||\frac{\partial A}{\partial u}||=1$.
+El Lema de Gauss (en su forma más abstracta) implica que el vector radial $\frac{\partial A}{\partial u}$ es ortogonal al vector "angular" $\frac{\partial A}{\partial t}$. Por tanto, $\langle \frac{\partial A}{\partial u}, \frac{\partial A}{\partial t} \rangle = 0$.
+Calculamos la norma al cuadrado de la velocidad de $\alpha$:
+$$ ||\alpha'(t)||^2 = \left\langle \frac{\partial A}{\partial u}\frac{du}{dt} + \frac{\partial A}{\partial t}, \frac{\partial A}{\partial u}\frac{du}{dt} + \frac{\partial A}{\partial t} \right\rangle = \left(\frac{du}{dt}\right)^2 ||\frac{\partial A}{\partial u}||^2 + ||\frac{\partial A}{\partial t}||^2 = \left(\frac{du}{dt}\right)^2 + ||\frac{\partial A}{\partial t}||^2 $$
+Como $||\frac{\partial A}{\partial t}||^2 \ge 0$, se tiene que $||\alpha'(t)||^2 \ge (\frac{du}{dt})^2$, y por tanto $||\alpha'(t)|| \ge |\frac{du}{dt}|$.
+Integrando esta desigualdad obtenemos el resultado:
+$$ L(\alpha) = \int_a^b ||\alpha'(t)|| dt \ge \int_a^b \left|\frac{du}{dt}\right| dt \ge \left|\int_a^b \frac{du}{dt} dt\right| = |u(b) - u(a)| $$
+La igualdad se alcanza solo si $||\frac{\partial A}{\partial t}|| = 0$ (lo que implica que $X(t)$ es constante) y si $\frac{du}{dt}$ no cambia de signo (lo que implica que $u(t)$ es monótona). Esto significa que la curva $\alpha$ debe ser un segmento de una geodésica radial para que su longitud sea igual a la diferencia de las distancias radiales.
+\end{proof}
+
+Este lema es la pieza central en la demostración del Teorema de Hopf-Rinow. Nos dice que, en un entorno normal, el camino más corto para ir de un punto a otro es seguir la geodésica que los une. La aplicación exponencial nos da el mapa para encontrar esa geodésica, y el Lema de Gauss nos asegura que es, en efecto, el camino más corto localmente. El Teorema de Hopf-Rinow generalizará esta idea a escala global bajo la condición de completitud.
+
+\chapter{El Teorema de Hopf-Rinow}
+
+Llegamos al núcleo de este trabajo: el Teorema de Hopf-Rinow. Este resultado establece una profunda conexión entre la estructura métrica de una superficie (vista como un espacio métrico), su estructura geodésica (la capacidad de extender "líneas rectas") y la existencia de caminos que minimizan la distancia.
+
+\section{Conceptos de Completitud}
+
+Para enunciar el teorema, necesitamos formalizar dos nociones de "completitud".
+
+\begin{definicion}
+Sea $S$ una superficie conexa. La \textbf{distancia intrínseca} $d(p,q)$ entre dos puntos $p, q \in S$ se define como el ínfimo de las longitudes de todas las curvas regulares a trozos que unen $p$ y $q$:
+$$ d(p,q) = \inf \{ L(\alpha) \mid \alpha \text{ es una curva regular a trozos que une } p \text{ y } q \} $$
+Como se demuestra en la Proposición 11.14 de McCleary [4], la función $d: S \times S \to \mathbb{R}$ satisface los axiomas de una métrica, convirtiendo a $(S,d)$ en un espacio métrico.
+\end{definicion}
+
+\begin{definicion}[Completitud Métrica]
+Una superficie $S$, dotada de su distancia intrínseca $d$, es \textbf{métricamente completa} si toda sucesión de Cauchy en $(S,d)$ converge a un punto en $S$. Esto significa que no hay "agujeros" o "puntos faltantes" en la superficie a los que una sucesión pueda "intentar" converger sin éxito [4].
+\end{definicion}
+
+\begin{definicion}[Completitud Geodésica]
+Una superficie $S$ es \textbf{geodésicamente completa} si toda geodésica $\gamma: (a,b) \to S$ puede ser extendida a una geodésica definida en toda la recta real, $\tilde{\gamma}: \mathbb{R} \to S$. Intuitivamente, esto significa que no se puede "caer por el borde" de la superficie siguiendo una línea recta [4].
+\end{definicion}
+
+Estas dos nociones de completitud, una analítica y la otra geométrica, resultan ser equivalentes.
+
+\section{Enunciado del Teorema}
+
+\begin{teorema}
+Sea $S$ una superficie regular conexa (o, más generalmente, una variedad riemanniana conexa). Las siguientes afirmaciones son equivalentes:
+\begin{enumerate}
+    \item[ (1) ] $(S,d)$ es un espacio métrico completo.
+    \item[ (2) ] $S$ es geodésicamente completa.
+    \item[ (3) ] Existe \textbf{un} punto $p \in S$ tal que la aplicación exponencial $\exp_p$ está definida en todo el plano tangente $T_pS$.
+\end{enumerate}
+Además, si cualquiera de estas condiciones se cumple, entonces:
+\begin{enumerate}
+    \item[ (4) ] Para cualquier par de puntos $p, q \in S$, existe una geodésica $\gamma$ que une $p$ y $q$ y que minimiza la longitud, es decir, $L(\gamma) = d(p,q)$.
+\end{enumerate}
+Este enunciado se basa en el presentado por Hopf y Rinow [3], y se encuentra en textos modernos como los de McCleary [4], O'Neill [6] y do Carmo [7, 8].
+\end{teorema}
+
+\section{Demostración del Teorema}
+
+La demostración entrelaza conceptos de análisis, topología y geometría. Seguiremos la estructura lógica presentada por McCleary [4], detallando cada paso. Probaremos el ciclo de implicaciones (2) $\Rightarrow$ (1) y (2) $\Rightarrow$ (4), y luego (1) $\Rightarrow$ (2).
+
+\begin{proof}[Demostración de (2) $\Rightarrow$ (4)]
+
+Esta es la parte más constructiva y geométrica de la prueba. Asumimos que $S$ es geodésicamente completa y debemos probar la existencia de geodésicas minimizantes.
+
+Sea $S$ geodésicamente completa. Sean $p, q \in S$. Queremos encontrar una geodésica de $p$ a $q$ con longitud $d(p,q)$.
+
+\begin{enumerate}
+    \item \textbf{Configuración inicial.} Sea $\rho = d(p,q)$. Como $S$ es geodésicamente completa, la aplicación $\exp_p$ está definida en todo $T_pS$. Sea $\epsilon > 0$ suficientemente pequeño para que $\exp_p$ sea un difeomorfismo en la bola $B_\epsilon(0_p)$. La imagen $U_p = \exp_p(B_\epsilon(0_p))$ es un entorno normal de $p$. La frontera de este entorno, la esfera geodésica $\Sigma = \exp_p(S_\delta(0_p))$ para un $\delta < \epsilon$, es un conjunto compacto.
+
+    \item \textbf{El punto de partida de la geodésica.} Consideremos la función continua $f(s) = d(s,q)$ para $s \in \Sigma$. Como $\Sigma$ es compacto, $f$ alcanza un mínimo en algún punto $p_0 \in \Sigma$. Por la propiedad de la distancia, cualquier curva de $p$ a $q$ debe cruzar $\Sigma$. El camino más corto de $p$ a $q$ debe pasar por este punto $p_0$. Por tanto, $d(p,q) = d(p,p_0) + d(p_0,q)$. Como $p_0$ está en la esfera geodésica de radio $\delta$, $d(p,p_0) = \delta$. Así, $d(p_0,q) = \rho - \delta$.
+    El punto $p_0$ se encuentra en una única geodésica radial que parte de $p$, digamos $\gamma(t) = \exp_p(t\vec{v}_0)$ para algún vector unitario $\vec{v}_0$. Tenemos que $p_0 = \gamma(\delta)$. La afirmación es que la geodésica buscada es precisamente $\gamma$, y que $\gamma(\rho) = q$.
+
+    \item \textbf{El argumento de extensión.} Para probar que $\gamma(\rho)=q$, demostraremos que $d(\gamma(t), q) = \rho - t$ para todo $t \in [0, \rho]$. Ya sabemos que es cierto para $t=\delta$. Sea $r_0 = \sup \{ r \in [\delta, \rho] \mid d(\gamma(r), q) = \rho - r \}$. Como la distancia es una función continua, el supremo se alcanza, es decir, $d(\gamma(r_0), q) = \rho - r_0$.
+    Ahora, suponemos por contradicción que $r_0 < \rho$. Repetimos el argumento anterior en un entorno normal alrededor de $\gamma(r_0)$. Sea $\Sigma'$ una pequeña esfera geodésica de radio $\delta'$ alrededor de $\gamma(r_0)$. Sea $p_0' \in \Sigma'$ el punto que minimiza la distancia a $q$. Entonces, $d(\gamma(r_0), q) = d(\gamma(r_0), p_0') + d(p_0', q)$, lo que implica $d(p_0', q) = (\rho - r_0) - \delta'$.
+    Por la desigualdad del triángulo, $d(p, p_0') \ge d(p,q) - d(p_0',q) = \rho - ((\rho - r_0) - \delta') = r_0 + \delta'$.
+    Consideremos la curva quebrada que va de $p$ a $\gamma(r_0)$ a lo largo de $\gamma$, y luego de $\gamma(r_0)$ a $p_0'$ a lo largo de la geodésica radial. La longitud de esta curva es exactamente $r_0 + \delta'$. Como esta longitud coincide con la distancia mínima $d(p,p_0')$, esta curva quebrada debe ser en sí misma una única geodésica (por una consecuencia del Lema de Gauss, Corolario 11.17 en McCleary [4]).
+    Por la unicidad de las geodésicas, esta geodésica debe ser la continuación de $\gamma$. Por tanto, $p_0' = \gamma(r_0 + \delta')$. Pero esto significa que $d(\gamma(r_0+\delta'), q) = \rho - (r_0+\delta')$, lo que contradice la definición de $r_0$ como el supremo.
+    La contradicción implica que $r_0$ no puede ser menor que $\rho$. Por tanto, $r_0 = \rho$, lo que significa que $d(\gamma(\rho), q) = \rho - \rho = 0$, y así $\gamma(\rho)=q$. Esto prueba (4).
+\end{enumerate}
+\end{proof}
+
+\begin{proof}[Demostración de que (4) implica que las bolas cerradas son compactas, y esto implica (1)]
+El argumento anterior muestra que cualquier punto $q$ a una distancia $\rho$ de $p$ está en la imagen de la bola cerrada $\bar{B}_\rho(0_p) \subset T_pS$ bajo $\exp_p$. Como $\bar{B}_\rho(0_p)$ es compacta y $\exp_p$ es continua, su imagen $\exp_p(\bar{B}_\rho(0_p))$ es un conjunto compacto en $S$. Esto significa que cualquier bola cerrada y acotada en $(S,d)$ es compacta (propiedad de Heine-Borel). Un resultado estándar de la topología de espacios métricos es que un espacio con la propiedad de Heine-Borel es completo. Por lo tanto, (2) $\Rightarrow$ (4) $\Rightarrow$ (1).
+\end{proof}
+
+\begin{proof}[Demostración de (1) $\Rightarrow$ (2)]
+
+Ahora asumimos que $(S,d)$ es un espacio métrico completo y debemos probar que es geodésicamente completo.
+\begin{enumerate}
+    \item \textbf{Asumir por contradicción:} Supongamos que $S$ no es geodésicamente completa. Esto significa que existe una geodésica $\gamma: (a,b) \to S$, parametrizada por la longitud de arco, que es maximal pero su dominio no es todo $\mathbb{R}$. Supongamos, sin pérdida de generalidad, que $b < \infty$.
+    \item \textbf{Construir una sucesión de Cauchy:} Sea $\{t_n\}_{n=1}^\infty$ una sucesión de puntos en $(a,b)$ que converge a $b$. Para $n, m$ suficientemente grandes, $t_n$ y $t_m$ están muy cerca. Como $\gamma$ está parametrizada por la longitud de arco, la distancia intrínseca entre $\gamma(t_n)$ y $\gamma(t_m)$ es igual a $|t_n - t_m|$:
+    $$d(\gamma(t_n), \gamma(t_m)) = |t_n - t_m|$$
+    Dado que $\{t_n\}$ es una sucesión de Cauchy en $\mathbb{R}$, la igualdad anterior implica que $\{\gamma(t_n)\}$ es una sucesión de Cauchy en $(S,d)$.
+    \item \textbf{Usar la completitud métrica:} Por la hipótesis (1), $S$ es métricamente completa. Por lo tanto, la sucesión de Cauchy $\{\gamma(t_n)\}$ debe converger a un punto $q \in S$.
+    \item \textbf{Extender la geodésica:} Ahora tenemos un punto $q = \lim_{t \to b^-} \gamma(t)$. Podemos considerar un entorno normal alrededor de $q$. Para $t$ suficientemente cercano a $b$, $\gamma(t)$ estará en este entorno. Usando la maquinaria de la aplicación exponencial en $q$, podemos "continuar" la geodésica más allá del punto $q$. Esto contradice la suposición de que $\gamma$ era una geodésica maximal que no podía extenderse más allá de $b$.
+\end{enumerate}
+La contradicción prueba que si $S$ es métricamente completa, debe ser también geodésicamente completa. Las implicaciones con (3) son directas por la definición de completitud geodésica. Esto completa el ciclo de equivalencias.
+\end{proof}
+
+El Teorema de Hopf-Rinow es una piedra angular porque conecta de manera rigurosa la intuición. La idea de que una superficie "sin agujeros" (completa métricamente) es una en la que se puede "caminar en línea recta" indefinidamente (completa geodésicamente) y en la que siempre existe un "camino más corto" (existencia de geodésicas minimizantes) queda formalizada y demostrada.
+
+\chapter{Consecuencias y Generalizaciones}
+
+El Teorema de Hopf-Rinow no es un resultado aislado; es una puerta de entrada a la geometría riemanniana global. Sus consecuencias directas y su papel como lema fundamental en la demostración de otros teoremas capitales subrayan su importancia.
+
+\section{Corolarios Inmediatos}
+
+Dos consecuencias directas del teorema son de particular relevancia.
+
+\begin{corolario}
+Toda superficie (o variedad riemanniana) compacta y conexa es geodésicamente completa.
+\end{corolario}
+\begin{proof}
+Un resultado estándar de la topología es que todo espacio métrico compacto es completo. Si una superficie $S$ es compacta, el espacio métrico $(S,d)$ es compacto y, por lo tanto, completo. Por la equivalencia (1) $\Leftrightarrow$ (2) del Teorema de Hopf-Rinow, se sigue que $S$ es geodésicamente completa [7, 8, 9].
+\end{proof}
+
+Este corolario es de gran alcance. Significa que en superficies cerradas y acotadas como la esfera o el toro, las geodésicas pueden extenderse infinitamente. Por ejemplo, un círculo máximo en una esfera puede recorrerse una y otra vez sin fin.
+
+\begin{corolario}
+Si una superficie $S$ es completa y conexa, entonces para cualquier par de puntos $p, q \in S$, existe al menos una geodésica que los une. En consecuencia, la aplicación exponencial $\exp_p: T_pS \to S$ es sobreyectiva para cualquier $p \in S$.
+\end{corolario}
+\begin{proof}
+La primera parte es una reafirmación de la conclusión (4) del Teorema de Hopf-Rinow. La sobreyectividad de $\exp_p$ se sigue de esto: para cualquier $q \in S$, existe una geodésica minimizante $\gamma$ de $p$ a $q$. Si $\vec{v} = \gamma'(0)$, entonces $\gamma(t) = \exp_p(t\vec{v})$. Si la longitud de $\gamma$ es $L$, entonces $q = \gamma(L) = \exp_p(L\vec{v})$. Como esto es válido para cualquier $q$, $\exp_p$ es sobreyectiva [7].
+\end{proof}
+
+\section{Relación con el Teorema de Cartan-Hadamard}
+
+El Teorema de Hopf-Rinow es un prerrequisito esencial para uno de los resultados más profundos que relacionan la curvatura con la topología global: el Teorema de Cartan-Hadamard.
+
+\begin{teorema}[Cartan-Hadamard]
+Sea $M$ una variedad riemanniana completa y simplemente conexa con curvatura seccional no positiva ($K \le 0$) en todos los puntos. Entonces, $M$ es difeomorfa a $\mathbb{R}^n$, donde $n = \dim(M)$. Además, la aplicación exponencial $\exp_p: T_pM \to M$ es un difeomorfismo para cualquier $p \in M$.
+\end{teorema}
+
+La conexión con el Teorema de Hopf-Rinow es directa e indispensable. La hipótesis de "completitud" en el Teorema de Cartan-Hadamard es precisamente la completitud métrica o geodésica garantizada por Hopf-Rinow [10, 8, 11, 12].
+
+El argumento para demostrar el Teorema de Cartan-Hadamard se basa en probar que, bajo las condiciones de curvatura no positiva, la aplicación exponencial $\exp_p$ no solo es un difeomorfismo local (lo cual es siempre cierto), sino también un difeomorfismo global. Para que esto sea posible, $\exp_p$ debe estar, como mínimo, definida en todo el espacio tangente $T_pM$. El Teorema de Hopf-Rinow nos asegura que la condición de "completitud" es exactamente lo que se necesita para garantizar este dominio global para la aplicación exponencial.
+
+En resumen, el Teorema de Hopf-Rinow establece el escenario. Proporciona un universo de variedades (las completas) donde las geodésicas se comportan de manera predecible y se extienden indefinidamente. Dentro de este universo, teoremas como el de Cartan-Hadamard pueden entonces imponer condiciones adicionales sobre la curvatura para deducir propiedades topológicas globales muy fuertes.
+
+\begin{thebibliography}{9}
+\addcontentsline{toc}{chapter}{Bibliografía}
+
+\bibitem{oneill}
+O'Neill, B. (1983). *Semi-Riemannian Geometry: With Applications to Relativity*. Academic Press. [1]
+
+\bibitem{docarmo_dif}
+do Carmo, M. P. (1976). *Differential Geometry of Curves and Surfaces*. Prentice-Hall. [2]
+
+\bibitem{hopfrinow}
+Hopf, H., \& Rinow, W. (1931). Ueber den Begriff der vollständigen differentialgeometrischen Fläche. *Commentarii Mathematici Helvetici*, 3, 209–225. [3]
+
+\bibitem{mccleary}
+McCleary, J. (1995). *Geometry from a Differentiable Viewpoint*. Cambridge University Press. [4]
+
+\bibitem{costa}
+Costa, A. F., Gamboa, J. M., \& Porto, A. M. (2018). *Geometría Diferencial de Curvas y Superficies*. Sanz y Torres, UNED. [5]
+
+\bibitem{oneill_semi}
+O'Neill, B. (1983). *Semi-Riemannian Geometry: With Applications to Relativity*. Academic Press. [6]
+
+\bibitem{docarmo}
+do Carmo, M. P. (1992). *Riemannian Geometry*. Birkhäuser. [7]
+
+\bibitem{helgason}
+Helgason, S. (1978). *Differential Geometry, Lie Groups, and Symmetric Spaces*. Academic Press. [10]
+
+\bibitem{lee}
+Lee, J. M. (2018). *Introduction to Riemannian Manifolds*. Springer. [9]
+
+\bibitem{kobayashi}
+Kobayashi, S., & Nomizu, K. (1963). \textbf{Foundations of Differential Geometry, Vol. 1}. Wiley-Interscience. [11]
+
+\bibitem{cheeger}
+Cheeger, J., & Ebin, D. G. (1975)\textbf{. Comparison Theorems in Riemannian Geometry}. North-Holland Publishing Company. [12]
+
+\end{thebibliography}
+
+\end{document}

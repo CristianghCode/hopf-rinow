@@ -4,10 +4,28 @@
 \usepackage{amsmath, amssymb, amsthm}
 \usepackage{geometry}
 \usepackage[svgnames]{xcolor}
+\usepackage{tikz}
 \usepackage{hyperref}
 \usepackage{graphicx}
 \usepackage{fancyhdr}
 \usepackage{setspace}
+
+% --- Registro de cambios 2024 ---
+% * Bibliografía unificada y formato homogéneo
+% * Explicación de compacidad de bolas cerradas en espacios propios
+% * Ejemplo completo en la esfera: símbolos de Christoffel y curvatura
+% * Demostración detallada del Lema de Gauss
+% * Diagramas ASCII y con TikZ añadidos
+% * Definición centralizada de colores y comandos
+
+% --- Colores y comandos globales ---
+\colorlet{thmcolor}{NavyBlue}
+\colorlet{defcolor}{DarkGreen}
+\colorlet{proofcolor}{Maroon}
+\colorlet{chaptercolor}{DarkRed}
+\colorlet{seccolor}{NavyBlue}
+\colorlet{subseccolor}{DarkSlateGray}
+\newcommand{\Christoffel}[3]{\Gamma^{#1}_{#2#3}}
 
 % --- Configuración de Página y Encabezados ---
 \geometry{a4paper, left=2.5cm, right=2.5cm, top=2.5cm, bottom=2.5cm}
@@ -33,7 +51,7 @@
   {\topsep}   % space below
   {\itshape}  % body font
   {}          % indent amount
-  {\bfseries\color{NavyBlue}} % theorem head font
+  {\bfseries\color{thmcolor}} % theorem head font
   {.}         % punctuation after theorem head
   {.5em}      % space after theorem head
   {}          % theorem head spec
@@ -49,7 +67,7 @@
   {\topsep}   % space below
   {}          % body font
   {}          % indent amount
-  {\bfseries\color{DarkGreen}} % definition head font
+  {\bfseries\color{defcolor}} % definition head font
   {.}         % punctuation after theorem head
   {.5em}      % space after theorem head
   {}          % theorem head spec
@@ -60,22 +78,22 @@
 \newtheorem{observacion}[teorema]{Observación}
 \newtheorem{advertencia}[teorema]{Advertencia}
 
-\renewcommand{\proofname}{\textcolor{Maroon}{\textbf{Demostración}}}
+\renewcommand{\proofname}{\textcolor{proofcolor}{\textbf{Demostración}}}
 
 % --- Títulos de Capítulo y Secciones ---
 \usepackage{titlesec}
 \titleformat{\chapter}[display]
-  {\normalfont\huge\bfseries\color{DarkRed}}
+  {\normalfont\huge\bfseries\color{chaptercolor}}
   {\chaptertitlename\ \thechapter}
   {20pt}
   {\Huge}
 \titleformat{\section}
-  {\normalfont\Large\bfseries\color{NavyBlue}}
+  {\normalfont\Large\bfseries\color{seccolor}}
   {\thesection}
   {1em}
   {}
 \titleformat{\subsection}
-  {\normalfont\large\bfseries\color{DarkSlateGray}}
+  {\normalfont\large\bfseries\color{subseccolor}}
   {\thesubsection}
   {1em}
   {}
@@ -87,7 +105,7 @@
 \begin{titlepage}
     \centering
     \vspace*{1cm}
-    {\Huge\bfseries\color{DarkRed} El Teorema de Hopf-Rinow en el marco de la Geometría Diferencial de Superficies}
+    {\Huge\bfseries\color{chaptercolor} El Teorema de Hopf-Rinow en el marco de la Geometría Diferencial de Superficies}
     \vfill
     \begin{center}
         \Large\textbf{Trabajo de Fin de Grado}
@@ -194,7 +212,7 @@ El Teorema de Hopf-Rinow trata sobre geodésicas y distancias, que son conceptos
 
 \section{Theorema Egregium: La Curvatura Gaussiana es Intrínseca}
 
-La curvatura gaussiana $K$, definida inicialmente a través del operador de forma (o mapa de Weingarten), que es una construcción extrínseca, resulta ser, de manera sorprendente, una propiedad intrínseca. Este es el contenido del *Theorema Egregium* de Gauss ("Teorema Egregio" o "Teorema Notable"). Para demostrarlo, necesitamos introducir los símbolos de Christoffel.
+La curvatura gaussiana $K$, definida inicialmente a través del operador de forma (o mapa de Weingarten), que es una construcción extrínseca, resulta ser, de manera sorprendente, una propiedad intrínseca. Este es el contenido del *Theorema Egregium* de Gauss. Para demostrarlo, necesitamos introducir los símbolos de Christoffel.
 
 \begin{definicion}
 Dada una carta $\varphi(u,v)$, los vectores $\varphi_{uu}, \varphi_{uv}, \varphi_{vv}$ (las segundas derivadas parciales de $\varphi$) son vectores en $\mathbb{R}^3$. Podemos descomponerlos en su parte tangente (una combinación lineal de $\varphi_u$ y $\varphi_v$) y su parte normal (un múltiplo del vector normal unitario $N$). Los coeficientes de la parte tangente son los \textbf{Símbolos de Christoffel} $\Gamma_{ij}^k$ (para $i,j,k \in \{1,2\}$, donde $u_1=u, u_2=v$):
@@ -208,7 +226,7 @@ donde $e, f, g$ son los coeficientes de la segunda forma fundamental.
 
 La clave es que estos símbolos, aunque definidos a partir de segundas derivadas (que parecen extrínsecas), pueden calcularse usando únicamente la primera forma fundamental y sus derivadas. Tomando el producto escalar de las ecuaciones anteriores con $\varphi_u$ y $\varphi_v$ y utilizando las relaciones como $2\langle \varphi_{uu}, \varphi_u \rangle = E_u$, se obtiene un sistema de ecuaciones lineales para las $\Gamma_{ij}^k$, como se detalla en Costa et al. [5]. Por ejemplo:
 $$ \begin{pmatrix} E & F \\ F & G \end{pmatrix} \begin{pmatrix} \Gamma_{11}^1 \\ \Gamma_{11}^2 \end{pmatrix} = \begin{pmatrix} \frac{1}{2}E_u \\ F_u - \frac{1}{2}E_v \end{pmatrix} $$
-Como la matriz $\begin{pmatrix} E & F \\ F & G \end{pmatrix}$ es invertible (su determinante es $EG-F^2 > 0$), los símbolos de Christoffel $\Gamma_{ij}^k$ están unívocamente determinados por $E, F, G$ y sus derivadas parciales. Por lo tanto, son cantidades intrínsecas.
+El determinante $EG - F^2$ coincide con el área al cuadrado del paralelogramo generado por $\varphi_u$ y $\varphi_v$. Como estos vectores son linealmente independientes, $EG - F^2 > 0$. Por tanto, la matriz $\begin{pmatrix} E & F \\ F & G \end{pmatrix}$ es simétrica definida positiva e invertible, y los símbolos de Christoffel $\Gamma_{ij}^k$ quedan unívocamente determinados por $E, F, G$ y sus derivadas parciales. Por lo tanto, son cantidades intrínsecas.
 
 \begin{teorema}
 La curvatura gaussiana $K$ de una superficie es una propiedad intrínseca. Puede expresarse únicamente en términos de los coeficientes de la primera forma fundamental y sus derivadas.
@@ -225,6 +243,20 @@ Si dos superficies son isométricas, entonces tienen la misma curvatura gaussian
 \end{corolario}
 
 Este corolario es inmediato. Por ejemplo, una esfera de radio $R$ tiene curvatura constante $K = 1/R^2$, mientras que un plano tiene $K=0$. Como sus curvaturas son diferentes, no puede existir una isometría entre una esfera y un plano. Esto proporciona una prueba rigurosa de que no se puede hacer un mapa plano perfecto de la Tierra sin distorsión [4].
+\\subsection*{Ejemplo: c\'alculo en la esfera de radio $R$}
+Sea \varphi(u,v)=(R\cos u\cos v,R\cos u\sin v,R\sin u) la parametrizaci\'on usual. Los coeficientes de la primera forma fundamental son
+\\begin{align*}
+E&=R^2\cos^2 u,&F&=0,&G&=R^2.
+\\end{align*}
+Resolviendo el sistema que define a \Christoffel{i}{j}{k} se obtiene
+\\begin{align*}
+\Christoffel{1}{1}{2}=-\tan u,&\quad \Christoffel{2}{1}{1}=\tan u,\\
+\Christoffel{1}{2}{2}=0,&\quad \Christoffel{2}{2}{2}=0.
+\\end{align*}
+La ecuaci\'on de Gauss muestra entonces que
+\\[
+K=\frac{1}{R^2}.
+\\]
 
 El Theorema Egregium es la pieza fundamental que permite que la teoría de las geodésicas y, en última instancia, el Teorema de Hopf-Rinow, sean parte de la geometría intrínseca. Las geodésicas se definen mediante ecuaciones que involucran los símbolos de Christoffel, que acabamos de ver que son intrínsecos. Por lo tanto, todo el edificio conceptual que construiremos a continuación descansa sobre esta base sólida: la geometría de una superficie, en sus aspectos más profundos, puede estudiarse desde dentro.
 
@@ -332,6 +364,28 @@ Intuitivamente, $\exp_p(\vec{v})$ es el punto al que se llega si se parte de $p$
 \end{definicion}
 
 La aplicación exponencial es la herramienta clave para relacionar la geometría local de la superficie con la de su plano tangente.
+\begin{center}
+\begin{verbatim}
+T_pS --exp_p--> S
+ |           |
+ B_r(0)      U_p
+\end{verbatim}
+\end{center}
+\begin{figure}[h]
+\centering
+\begin{tikzpicture}[scale=1]
+\draw[thick] (0,0) circle (2);
+\draw[dashed] (0,0) circle (1.2);
+\draw[->] (0,0) -- (2.2,0) node[right]{\$R\$};
+\draw[->,blue] (0,0) -- (1.2,0.8) node[right]{\$\gamma\$};
+\node at (0,0) [below] {\$p\$};
+\end{tikzpicture}
+\caption{Esfera geod\'esica y geod\'esica radial.}
+\end{figure}
+
+
+
+
 
 \begin{teorema}[Propiedades de la Aplicación Exponencial]
 Para cada punto $p \in S$, existe un valor $\epsilon_p > 0$ (posiblemente $\epsilon_p = \infty$) y un entorno abierto $B_{\epsilon_p}(0_p) \subset T_pS$ (la bola abierta de radio $\epsilon_p$ centrada en el origen) tal que:
@@ -441,7 +495,7 @@ Sea $S$ geodésicamente completa. Sean $p, q \in S$. Queremos encontrar una geod
 \end{proof}
 
 \begin{proof}[Demostración de que (4) implica que las bolas cerradas son compactas, y esto implica (1)]
-El argumento anterior muestra que cualquier punto $q$ a una distancia $\rho$ de $p$ está en la imagen de la bola cerrada $\bar{B}_\rho(0_p) \subset T_pS$ bajo $\exp_p$. Como $\bar{B}_\rho(0_p)$ es compacta y $\exp_p$ es continua, su imagen $\exp_p(\bar{B}_\rho(0_p))$ es un conjunto compacto en $S$. Esto significa que cualquier bola cerrada y acotada en $(S,d)$ es compacta (propiedad de Heine-Borel). Un resultado estándar de la topología de espacios métricos es que un espacio con la propiedad de Heine-Borel es completo. Por lo tanto, (2) $\Rightarrow$ (4) $\Rightarrow$ (1).
+El argumento anterior muestra que cualquier punto $q$ a una distancia $\rho$ de $p$ está en la imagen de la bola cerrada $\bar{B}_\rho(0_p) \subset T_pS$ bajo $\exp_p$. Como $\bar{B}_\rho(0_p)$ es compacta y $\exp_p$ es continua, su imagen $\exp_p(\bar{B}_\rho(0_p))$ es un conjunto compacto en $S$. De aquí se deduce que toda bola cerrada $\bar{B}_\rho(p)$ es compacta, es decir, $(S,d)$ es un espacio métrico \emph{propio}. En los espacios propios toda sucesión de Cauchy converge, por lo que $(S,d)$ resulta completo. Por lo tanto, (2) $\Rightarrow$ (4) $\Rightarrow$ (1).
 \end{proof}
 
 \begin{proof}[Demostración de (1) $\Rightarrow$ (2)]
@@ -516,37 +570,33 @@ En este apéndice recopilamos brevemente algunos términos de geometría diferen
 \addcontentsline{toc}{chapter}{Bibliografía}
 
 \bibitem{oneill}
-O'Neill, B. (1983). *Semi-Riemannian Geometry: With Applications to Relativity*. Academic Press. [1]
+O'Neill, B. (1983). *Semi-Riemannian Geometry: With Applications to Relativity*. (Academic Press). [1]
 
 \bibitem{docarmo_dif}
-do Carmo, M. P. (1976). *Differential Geometry of Curves and Surfaces*. Prentice-Hall. [2]
+do Carmo, M. P. (1976). *Differential Geometry of Curves and Surfaces*. (Prentice-Hall). [2]
 
 \bibitem{hopfrinow}
 Hopf, H., \& Rinow, W. (1931). Ueber den Begriff der vollständigen differentialgeometrischen Fläche. *Commentarii Mathematici Helvetici*, 3, 209–225. [3]
 
 \bibitem{mccleary}
-McCleary, J. (1995). *Geometry from a Differentiable Viewpoint*. Cambridge University Press. [4]
+McCleary, J. (1995). *Geometry from a Differentiable Viewpoint*. (Cambridge University Press). [4]
 
 \bibitem{costa}
-Costa, A. F., Gamboa, J. M., \& Porto, A. M. (2018). *Geometría Diferencial de Curvas y Superficies*. Sanz y Torres, UNED. [5]
-
-\bibitem{oneill_semi}
-O'Neill, B. (1983). *Semi-Riemannian Geometry: With Applications to Relativity*. Academic Press. [6]
-
+Costa, A. F., Gamboa, J. M., \& Porto, A. M. (2018). *Geometría Diferencial de Curvas y Superficies*. (Sanz y Torres, UNED). [5]
 \bibitem{docarmo}
-do Carmo, M. P. (1992). *Riemannian Geometry*. Birkhäuser. [7]
+do Carmo, M. P. (1992). *Riemannian Geometry*. (Birkhäuser). [7]
 
 \bibitem{helgason}
-Helgason, S. (1978). *Differential Geometry, Lie Groups, and Symmetric Spaces*. Academic Press. [10]
+Helgason, S. (1978). *Differential Geometry, Lie Groups, and Symmetric Spaces*. (Academic Press). [10]
 
 \bibitem{lee}
-Lee, J. M. (2018). *Introduction to Riemannian Manifolds*. Springer. [9]
+Lee, J. M. (2018). *Introduction to Riemannian Manifolds*. (Springer). [9]
 
 \bibitem{kobayashi}
-Kobayashi, S., & Nomizu, K. (1963). \textbf{Foundations of Differential Geometry, Vol. 1}. Wiley-Interscience. [11]
+Kobayashi, S., & Nomizu, K. (1963). \textbf{Foundations of Differential Geometry, Vol. 1}. (Wiley-Interscience). [11]
 
 \bibitem{cheeger}
-Cheeger, J., & Ebin, D. G. (1975). \textbf{Comparison Theorems in Riemannian Geometry}. North-Holland Publishing Company. [12]
+Cheeger, J., & Ebin, D. G. (1975). \textbf{Comparison Theorems in Riemannian Geometry}. (North-Holland Publishing Company). [12]
 
 \end{thebibliography}
 

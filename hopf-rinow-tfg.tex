@@ -58,6 +58,7 @@
 \newtheorem{definicion}[teorema]{Definición}
 \newtheorem{ejemplo}[teorema]{Ejemplo}
 \newtheorem{observacion}[teorema]{Observación}
+\newtheorem{advertencia}[teorema]{Advertencia}
 
 \renewcommand{\proofname}{\textcolor{Maroon}{\textbf{Demostración}}}
 
@@ -117,6 +118,10 @@ Comenzaremos estableciendo los cimientos de la geometría intrínseca. A continu
 \chapter{Preliminares de Geometría Intrínseca: El Escenario del Teorema}
 
 Para comprender el alcance del Teorema de Hopf-Rinow, es imprescindible establecer primero el marco conceptual en el que opera: la geometría intrínseca de las superficies. Esta rama de la geometría diferencial se ocupa de las propiedades de una superficie que pueden ser determinadas por un observador confinado a ella, sin ninguna referencia al espacio tridimensional que la contiene. El Teorema de Hopf-Rinow es una afirmación puramente intrínseca, y este capítulo sienta las bases para entender por qué.
+
+\begin{advertencia}
+En lo que sigue se asume familiaridad con nociones básicas de geometría diferencial tales como superficies regulares, segunda forma fundamental, curvatura media y conexión de Levi-Civita. Una exposición detallada de estos conceptos puede encontrarse en el texto de referencia de la UNED~\cite{costa}.
+\end{advertencia}
 
 \section{Superficies, Cartas y la Primera Forma Fundamental}
 
@@ -492,6 +497,20 @@ La conexión con el Teorema de Hopf-Rinow es directa e indispensable. La hipóte
 El argumento para demostrar el Teorema de Cartan-Hadamard se basa en probar que, bajo las condiciones de curvatura no positiva, la aplicación exponencial $\exp_p$ no solo es un difeomorfismo local (lo cual es siempre cierto), sino también un difeomorfismo global. Para que esto sea posible, $\exp_p$ debe estar, como mínimo, definida en todo el espacio tangente $T_pM$. El Teorema de Hopf-Rinow nos asegura que la condición de "completitud" es exactamente lo que se necesita para garantizar este dominio global para la aplicación exponencial.
 
 En resumen, el Teorema de Hopf-Rinow establece el escenario. Proporciona un universo de variedades (las completas) donde las geodésicas se comportan de manera predecible y se extienden indefinidamente. Dentro de este universo, teoremas como el de Cartan-Hadamard pueden entonces imponer condiciones adicionales sobre la curvatura para deducir propiedades topológicas globales muy fuertes.
+
+\appendix
+
+\chapter{Glosario Básico}
+
+En este apéndice recopilamos brevemente algunos términos de geometría diferencial que se utilizan en el texto sin desarrollo detallado. Para una explicación completa de cada uno de ellos remitimos al lector a~\cite{costa}.
+
+\begin{description}
+  \item[Superficie regular] Subconjunto de $\mathbb{R}^3$ que localmente se parametriza mediante cartas diferenciables y cuya matriz jacobiana tiene rango dos.
+  \item[Segunda forma fundamental] Forma bilineal que mide la curvatura extrínseca de una superficie mediante las derivadas segundas de una parametrización.
+  \item[Curvatura media] Promedio de las curvaturas principales de una superficie; describe cómo se curva la superficie en el espacio ambiente.
+  \item[Conexión de Levi-Civita] Conexión compatible con la métrica y sin torsión que permite definir derivadas covariantes y geodésicas en superficies.
+  \item[Variedad riemanniana] Variedad diferenciable dotada de una métrica que asigna en cada punto un producto escalar en el espacio tangente.
+\end{description}
 
 \begin{thebibliography}{9}
 \addcontentsline{toc}{chapter}{Bibliografía}
